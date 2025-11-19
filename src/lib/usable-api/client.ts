@@ -13,26 +13,43 @@ import { serializeCardContent, getCardTags, fragmentToCard } from '@/src/lib/uti
 const API_URL = '/api/usable';
 
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    credentials: 'include', // Include session cookies
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      credentials: 'include', // Include session cookies
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(error.error || `HTTP ${response.status}`);
+    if (!response.ok) {
+      let errorMessage = `HTTP ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      } catch {
+        // If response body is not JSON, try to get text
+        try {
+          const errorText = await response.text();
+          if (errorText) errorMessage += `: ${errorText}`;
+        } catch {
+          // Ignore if we can't read the error body
+        }
+      }
+      throw new Error(errorMessage);
+    }
+
+    // Handle 204 No Content
+    if (response.status === 204) {
+      return null;
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(`API Error for ${endpoint}:`, error);
+    throw error;
   }
-
-  // Handle 204 No Content
-  if (response.status === 204) {
-    return null;
-  }
-
-  return response.json();
 }
 
 export const usableApi = {

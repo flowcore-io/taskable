@@ -32,6 +32,27 @@
   --color-ring: #347cbf;
   
   --radius: 0.5rem;
+  
+  /* OLD format variables for inline styles (HSL format) */
+  --background: 38 15% 95%;
+  --foreground: 205 39% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 205 39% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 205 39% 12%;
+  --primary: 205 57% 49%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 205 57% 49%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 208 48% 84%;
+  --muted-foreground: 208 22% 55%;
+  --accent: 205 57% 49%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 4 90% 58%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 208 48% 84%;
+  --input: 208 48% 84%;
+  --ring: 205 57% 49%;
 }
 
 /* Dark mode colors */
@@ -64,6 +85,27 @@
   --color-border: #2d4352;
   --color-input: #2d4352;
   --color-ring: #fcaf2a;
+  
+  /* OLD format variables for inline styles (HSL format) */
+  --background: 205 39% 8%;
+  --foreground: 38 15% 95%;
+  --card: 205 39% 12%;
+  --card-foreground: 38 15% 95%;
+  --popover: 205 39% 12%;
+  --popover-foreground: 38 15% 95%;
+  --primary: 40 97% 59%;
+  --primary-foreground: 205 39% 12%;
+  --secondary: 40 97% 59%;
+  --secondary-foreground: 205 39% 12%;
+  --muted: 205 39% 20%;
+  --muted-foreground: 208 22% 65%;
+  --accent: 40 97% 59%;
+  --accent-foreground: 205 39% 12%;
+  --destructive: 4 90% 58%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 205 39% 20%;
+  --input: 205 39% 20%;
+  --ring: 40 97% 59%;
 }
 
 /* Explicit utility classes for Tailwind v4 */

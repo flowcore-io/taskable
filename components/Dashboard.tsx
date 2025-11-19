@@ -20,6 +20,7 @@ import {
   useDeleteCard,
 } from '@/src/features/todos/queries';
 import { TemplateConsentDialog } from '@/src/features/templates/TemplateConsentDialog';
+import { ChatLinkButton } from '@/src/features/templates/ChatLinkButton';
 import {
   checkTemplateStatus,
   createOrUpdateTemplates,
@@ -37,6 +38,7 @@ export function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showTemplateConsent, setShowTemplateConsent] = useState(false);
   const [isCreatingTemplates, setIsCreatingTemplates] = useState(false);
+  const [templateRefreshCounter, setTemplateRefreshCounter] = useState(0);
 
   // Load config on mount
   useEffect(() => {
@@ -172,25 +174,55 @@ export function Dashboard() {
   };
 
   const handleAcceptTemplates = async () => {
-    if (!config?.workspaceId || !config?.fragmentTypeId) return;
+    if (!config?.workspaceId) {
+      alert('No workspace configured. Please refresh and try again.');
+      return;
+    }
 
     setIsCreatingTemplates(true);
     try {
-      const { templateId, instructionSetId } = await createOrUpdateTemplates(
-        config.workspaceId,
-        config.fragmentTypeId,
-      );
+      console.log('=== STARTING TEMPLATE CREATION ===');
+      console.log('Workspace ID:', config.workspaceId);
+      console.log('Cards Fragment Type ID:', config.fragmentTypeId);
 
-      const updatedConfig = saveTemplateConfig(config, templateId, instructionSetId);
+      const result = await createOrUpdateTemplates(config.workspaceId, config.fragmentTypeId);
+
+      console.log('=== TEMPLATES CREATED SUCCESSFULLY ===');
+      console.log('Result:', result);
+
+      const updatedConfig = saveTemplateConfig(config, result.templateId, result.instructionSetId);
       configStorage.set(updatedConfig);
       setConfig(updatedConfig);
 
       setShowTemplateConsent(false);
+
+      console.log('=== TEMPLATE CREATION COMPLETE ===');
+
+      // Wait a moment for API indexing, then refresh the chat button
+      setTimeout(() => {
+        console.log('Triggering template status refresh...');
+        setTemplateRefreshCounter((prev) => prev + 1);
+      }, 1000);
+
+      alert(
+        '✅ Templates created successfully!\n\nYou can now use Usable Chat to manage your tasks.',
+      );
     } catch (error) {
-      console.error('Failed to create templates:', error);
-      alert('Failed to create templates. Please try again.');
+      console.error('=== TEMPLATE CREATION FAILED ===');
+      console.error('Error details:', error);
+
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorStack = error instanceof Error ? error.stack : '';
+
+      console.error('Error message:', errorMessage);
+      console.error('Error stack:', errorStack);
+
+      alert(
+        `❌ Failed to create templates:\n\n${errorMessage}\n\nPlease check the browser console for details.`,
+      );
     } finally {
       setIsCreatingTemplates(false);
+      console.log('=== TEMPLATE CREATION HANDLER FINISHED ===');
     }
   };
 
@@ -239,6 +271,13 @@ export function Dashboard() {
       >
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
+            {/* Chat Link Button */}
+            <ChatLinkButton
+              config={config}
+              onRequestLink={() => setShowTemplateConsent(true)}
+              forceRefresh={templateRefreshCounter}
+            />
+
             {/* Search bar */}
             <div className="flex-1 max-w-3xl">
               <div className="relative">
