@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "usable-scoped": {
+      "command": "npx",
+      "args": [
+        "@usabledev/mcp-server@latest",
+        "server"
+      ],
+      "envFile": ".env"
+    },
+    "shadcn": {
+      "url": "https://www.shadcn.io/api/mcp"
+    }
+  }
+}

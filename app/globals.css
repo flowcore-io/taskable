@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+/* Define colors using Tailwind v4 theme variables */
+@theme {
+  --color-background: #f4f3f3;
+  --color-foreground: #1c2f40;
+  
+  --color-card: #ffffff;
+  --color-card-foreground: #1c2f40;
+  
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1c2f40;
+  
+  /* Light mode - Blue actions */
+  --color-primary: #347cbf;
+  --color-primary-foreground: #ffffff;
+  
+  --color-secondary: #347cbf;
+  --color-secondary-foreground: #ffffff;
+  
+  --color-muted: #a9cce9;
+  --color-muted-foreground: #7a8fa5;
+  
+  --color-accent: #347cbf;
+  --color-accent-foreground: #ffffff;
+  
+  --color-destructive: #E53935;
+  --color-destructive-foreground: #ffffff;
+  
+  --color-border: #a9cce9;
+  --color-input: #a9cce9;
+  --color-ring: #347cbf;
+  
+  --radius: 0.5rem;
+}
+
+/* Dark mode colors */
+.dark {
+  --color-background: #0f1e2b;
+  --color-foreground: #f4f3f3;
+  
+  --color-card: #1c2f40;
+  --color-card-foreground: #f4f3f3;
+  
+  --color-popover: #1c2f40;
+  --color-popover-foreground: #f4f3f3;
+  
+  /* Dark mode - Yellow actions */
+  --color-primary: #fcaf2a;
+  --color-primary-foreground: #1c2f40;
+  
+  --color-secondary: #fcaf2a;
+  --color-secondary-foreground: #1c2f40;
+  
+  --color-muted: #2d4352;
+  --color-muted-foreground: #a8b5c3;
+  
+  --color-accent: #fcaf2a;
+  --color-accent-foreground: #1c2f40;
+  
+  --color-destructive: #E53935;
+  --color-destructive-foreground: #ffffff;
+  
+  --color-border: #2d4352;
+  --color-input: #2d4352;
+  --color-ring: #fcaf2a;
+}
+
+/* Explicit utility classes for Tailwind v4 */
+.bg-card {
+  background-color: var(--color-card) !important;
+}
+
+.bg-popover {
+  background-color: var(--color-popover) !important;
+}
+
+.text-card-foreground {
+  color: var(--color-card-foreground) !important;
+}
+
+.text-popover-foreground {
+  color: var(--color-popover-foreground) !important;
+}
+
+.border-border {
+  border-color: var(--color-border) !important;
+}
+
+.bg-background {
+  background-color: var(--color-background) !important;
+}
+
+.text-foreground {
+  color: var(--color-foreground) !important;
+}
+
+/* Masonry Grid Layout */
+.masonry-grid {
+  column-count: 1;
+  column-gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1280px) {
+  .masonry-grid {
+    column-count: 4;
+  }
+}
+
+.masonry-grid > * {
+  margin-bottom: 1rem;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    transform: translateY(8px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-in {
+  animation: fade-in 0.2s ease-out, zoom-in 0.2s ease-out, slide-in-from-bottom 0.2s ease-out;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 3s ease-in-out infinite;
+}
