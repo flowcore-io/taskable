@@ -35,19 +35,19 @@ export function TemplateConsentDialog({
 
         <div className="space-y-4 my-4">
           <div>
-            <h3 className="font-medium mb-2">What will be created:</h3>
+            <h3 className="font-medium text-foreground mb-2">What will be created:</h3>
             <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
               <li>
-                <strong>Todo Template</strong> - Standard structure for new tasks
+                <strong className="text-foreground">Todo Template</strong> - Standard structure for new tasks
               </li>
               <li>
-                <strong>Instruction Set</strong> - Enables Usable chat to manage your todos
+                <strong className="text-foreground">Instruction Set</strong> - Enables Usable chat to manage your todos
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-medium mb-2">These fragments are:</h3>
+            <h3 className="font-medium text-foreground mb-2">These fragments are:</h3>
             <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
               <li>Static (won't change unless app updates)</li>
               <li>Versioned (v1.0.0)</li>
@@ -58,7 +58,7 @@ export function TemplateConsentDialog({
 
           <div className="bg-muted p-4 rounded-md">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> If you skip this, you can manually delete these fragments later
+              <strong className="text-foreground">Note:</strong> If you skip this, you can manually delete these fragments later
               in your Usable workspace by searching for the tag "app:taskable"
             </p>
           </div>

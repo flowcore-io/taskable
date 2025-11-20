@@ -223,7 +223,7 @@ export function OnboardingPage({ onComplete, userEmail }: OnboardingPageProps) {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <label htmlFor="workspace" className="text-sm font-medium block mb-2">
+                  <label htmlFor="workspace" className="text-sm font-medium text-foreground block mb-2">
                     Select a Workspace
                   </label>
                   <Select
@@ -274,7 +274,7 @@ export function OnboardingPage({ onComplete, userEmail }: OnboardingPageProps) {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <label htmlFor="fragmentType" className="text-sm font-medium block mb-2">
+                  <label htmlFor="fragmentType" className="text-sm font-medium text-foreground block mb-2">
                     Select a Fragment Type
                   </label>
                   <Select

@@ -269,7 +269,7 @@ export function Dashboard() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.1, duration: 0.5 }}
       >
-        <div className="max-w-7xl mx-auto px-4 py-3">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
             {/* Chat Link Button */}
             <ChatLinkButton
@@ -300,7 +300,7 @@ export function Dashboard() {
                   placeholder="Search cards..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-muted/50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-2 bg-muted/50 text-foreground border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
                 />
               </div>
             </div>
@@ -312,7 +312,7 @@ export function Dashboard() {
                   configStorage.clear();
                   setConfig(null);
                 }}
-                className="p-2 hover:bg-muted rounded-lg transition-colors hidden md:block"
+                className="p-2 hover:bg-muted rounded-lg transition-colors text-foreground hidden md:block"
                 title="Change workspace"
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.95 }}
@@ -386,7 +386,7 @@ export function Dashboard() {
       </motion.header>
 
       <motion.main
-        className="max-w-7xl mx-auto px-4 py-6"
+        className="container mx-auto px-4 py-6"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}

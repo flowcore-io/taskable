@@ -52,10 +52,10 @@ export function AddDescriptionDialog({
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-background border border-border rounded-lg shadow-2xl z-[70] p-6"
           >
             <div className="flex items-start justify-between mb-4">
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold text-foreground">
                 {initialValue ? 'Edit Description' : 'Add Description'}
               </h2>
-              <button onClick={onClose} className="p-1 rounded hover:bg-muted">
+              <button onClick={onClose} className="p-1 rounded hover:bg-muted text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -64,7 +64,7 @@ export function AddDescriptionDialog({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Add a detailed description..."
-              className="w-full min-h-[200px] p-3 bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring resize-none"
+              className="w-full min-h-[200px] p-3 bg-muted text-foreground placeholder:text-muted-foreground border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring resize-none"
               maxLength={maxLength}
               autoFocus
             />
@@ -174,8 +174,8 @@ export function ManageLinksDialog({
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-background border border-border rounded-lg shadow-2xl z-[70] p-6"
           >
             <div className="flex items-start justify-between mb-4">
-              <h2 className="text-xl font-semibold">Manage Links</h2>
-              <button onClick={onClose} className="p-1 rounded hover:bg-muted">
+              <h2 className="text-xl font-semibold text-foreground">Manage Links</h2>
+              <button onClick={onClose} className="p-1 rounded hover:bg-muted text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -189,7 +189,7 @@ export function ManageLinksDialog({
                     className="flex items-start gap-2 p-2 bg-muted rounded-lg group"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium truncate">{link.title || link.url}</div>
+                      <div className="text-sm font-medium text-foreground truncate">{link.title || link.url}</div>
                       {link.title && (
                         <div className="text-xs text-muted-foreground truncate">{link.url}</div>
                       )}
@@ -212,7 +212,7 @@ export function ManageLinksDialog({
                 value={newUrl}
                 onChange={(e) => setNewUrl(e.target.value)}
                 placeholder="https://example.com"
-                className="w-full p-2 bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
+                className="w-full p-2 bg-muted text-foreground placeholder:text-muted-foreground border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -225,7 +225,7 @@ export function ManageLinksDialog({
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 placeholder="Link title (optional)"
-                className="w-full p-2 bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
+                className="w-full p-2 bg-muted text-foreground placeholder:text-muted-foreground border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -353,8 +353,8 @@ export function ManageAttachmentsDialog({
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-background border border-border rounded-lg shadow-2xl z-[70] p-6"
           >
             <div className="flex items-start justify-between mb-4">
-              <h2 className="text-xl font-semibold">Attach Image</h2>
-              <button onClick={onClose} className="p-1 rounded hover:bg-muted" disabled={uploading}>
+              <h2 className="text-xl font-semibold text-foreground">Attach Image</h2>
+              <button onClick={onClose} className="p-1 rounded hover:bg-muted text-foreground" disabled={uploading}>
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -491,8 +491,8 @@ export function ManageSubTasksDialog({
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-background border border-border rounded-lg shadow-2xl z-[70] p-6"
           >
             <div className="flex items-start justify-between mb-4">
-              <h2 className="text-xl font-semibold">Manage Sub-tasks</h2>
-              <button onClick={onClose} className="p-1 rounded hover:bg-muted">
+              <h2 className="text-xl font-semibold text-foreground">Manage Sub-tasks</h2>
+              <button onClick={onClose} className="p-1 rounded hover:bg-muted text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -533,7 +533,7 @@ export function ManageSubTasksDialog({
                       value={subTask.text}
                       onChange={(e) => handleUpdateText(subTask.id, e.target.value)}
                       className={`flex-1 bg-transparent border-none outline-none text-sm ${
-                        subTask.checked ? 'line-through text-muted-foreground' : ''
+                        subTask.checked ? 'line-through text-muted-foreground' : 'text-foreground'
                       }`}
                     />
                     <button
@@ -554,7 +554,7 @@ export function ManageSubTasksDialog({
                 value={newTaskText}
                 onChange={(e) => setNewTaskText(e.target.value)}
                 placeholder="New sub-task..."
-                className="flex-1 p-2 bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
+                className="flex-1 p-2 bg-muted text-foreground placeholder:text-muted-foreground border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();

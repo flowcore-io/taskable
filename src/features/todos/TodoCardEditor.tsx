@@ -310,7 +310,7 @@ export function TodoCardEditor({
                 <div className="flex items-center justify-between mb-3">
                   <motion.button
                     onClick={handleClose}
-                    className="p-2 rounded-lg hover:bg-muted transition-colors shrink-0"
+                    className="p-2 rounded-lg hover:bg-muted transition-colors text-foreground shrink-0"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label="Go back"
@@ -345,7 +345,7 @@ export function TodoCardEditor({
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
                   placeholder="Add a description to help identify this list..."
-                  className="w-full text-sm bg-transparent border-none outline-none focus:ring-0 text-muted-foreground placeholder:text-muted-foreground resize-none"
+                  className="w-full text-sm bg-transparent border-none outline-none focus:ring-0 text-foreground placeholder:text-muted-foreground resize-none"
                   rows={2}
                 />
               </motion.div>
@@ -412,7 +412,7 @@ export function TodoCardEditor({
                     id="collection-select"
                     value={collection}
                     onChange={(e) => setCollection(e.target.value)}
-                    className="px-3 py-1.5 bg-muted border border-border rounded-full text-sm capitalize focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="px-3 py-1.5 bg-muted text-foreground border border-border rounded-full text-sm capitalize focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <option value="default">Default</option>
                     <option value="work">Work</option>

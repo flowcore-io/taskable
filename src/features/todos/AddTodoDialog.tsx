@@ -44,7 +44,7 @@ export function AddTodoDialog({ open, onOpenChange, onSubmit, isLoading }: AddTo
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="title" className="text-sm font-medium block mb-2">
+            <label htmlFor="title" className="text-sm font-medium text-foreground block mb-2">
               Title <span className="text-destructive">*</span>
             </label>
             <Input
@@ -58,14 +58,14 @@ export function AddTodoDialog({ open, onOpenChange, onSubmit, isLoading }: AddTo
           </div>
 
           <div>
-            <label htmlFor="collection" className="text-sm font-medium block mb-2">
+            <label htmlFor="collection" className="text-sm font-medium text-foreground block mb-2">
               Collection
             </label>
             <select
               id="collection"
               value={collection}
               onChange={(e) => setCollection(e.target.value)}
-              className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 bg-background text-foreground border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="default">Default</option>
               <option value="work">Work</option>

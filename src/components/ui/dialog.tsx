@@ -73,7 +73,7 @@ export function DialogTitle({
   className,
 }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={cn('text-lg font-semibold leading-none tracking-tight', className)}>
+    <h2 className={cn('text-lg font-semibold leading-none tracking-tight text-foreground', className)}>
       {children}
     </h2>
   );

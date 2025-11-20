@@ -33,7 +33,7 @@
   
   --radius: 0.5rem;
   
-  /* OLD format variables for inline styles (HSL format) */
+  /* HSL format variables for inline styles */
   --background: 38 15% 95%;
   --foreground: 205 39% 12%;
   --card: 0 0% 100%;
@@ -86,7 +86,7 @@
   --color-input: #2d4352;
   --color-ring: #fcaf2a;
   
-  /* OLD format variables for inline styles (HSL format) */
+  /* HSL format variables for inline styles */
   --background: 205 39% 8%;
   --foreground: 38 15% 95%;
   --card: 205 39% 12%;
@@ -137,6 +137,14 @@
   color: var(--color-foreground) !important;
 }
 
+.text-muted-foreground {
+  color: var(--color-muted-foreground) !important;
+}
+
+.placeholder\:text-muted-foreground::placeholder {
+  color: var(--color-muted-foreground) !important;
+}
+
 /* Masonry Grid Layout */
 .masonry-grid {
   column-count: 1;
@@ -163,6 +171,9 @@
 
 .masonry-grid > * {
   margin-bottom: 1rem;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 /* Animations */

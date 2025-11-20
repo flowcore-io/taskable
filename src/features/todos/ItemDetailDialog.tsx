@@ -176,13 +176,13 @@ export function ItemDetailDialog({
                     onChange={(e) => setEditText(e.target.value)}
                     onBlur={handleSaveTitle}
                     onKeyDown={handleKeyDown}
-                    className="flex-1 text-2xl font-semibold bg-transparent border-none outline-none focus:ring-0"
+                    className="flex-1 text-2xl font-semibold text-foreground bg-transparent border-none outline-none focus:ring-0"
                   />
                 ) : (
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="flex-1 text-left text-2xl font-semibold cursor-pointer hover:text-muted-foreground transition-colors"
+                    className="flex-1 text-left text-2xl font-semibold text-foreground cursor-pointer hover:text-muted-foreground transition-colors"
                   >
                     {item.text}
                   </button>
@@ -191,7 +191,7 @@ export function ItemDetailDialog({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="p-2 rounded-lg hover:bg-muted transition-colors shrink-0"
+                  className="p-2 rounded-lg hover:bg-muted transition-colors text-foreground shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -220,13 +220,13 @@ export function ItemDetailDialog({
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <FileText className="w-5 h-5 text-muted-foreground" />
-                  <h3 className="text-lg font-medium">Description</h3>
+                  <h3 className="text-lg font-medium text-foreground">Description</h3>
                 </div>
                 <textarea
                   value={localDescription}
                   onChange={(e) => handleDescriptionChange(e.target.value)}
                   placeholder="Add a description to provide more context..."
-                  className="w-full min-h-[100px] p-3 bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring resize-none text-sm"
+                  className="w-full min-h-[100px] p-3 bg-muted text-foreground placeholder:text-muted-foreground border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring resize-none text-sm"
                 />
               </section>
 
@@ -234,7 +234,7 @@ export function ItemDetailDialog({
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <LinkIcon className="w-5 h-5 text-muted-foreground" />
-                  <h3 className="text-lg font-medium">Links</h3>
+                  <h3 className="text-lg font-medium text-foreground">Links</h3>
                 </div>
                 <div className="space-y-2">
                   {item.links && item.links.length > 0 && (
@@ -280,7 +280,7 @@ export function ItemDetailDialog({
                         onBlur={handleAddLink}
                         onKeyDown={handleLinkKeyDown}
                         placeholder="Paste or type URL..."
-                        className="flex-1 px-3 py-2 text-sm bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
+                        className="flex-1 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground bg-muted border border-border rounded-lg outline-none focus:ring-2 focus:ring-ring"
                       />
                     </div>
                   ) : (
@@ -300,7 +300,7 @@ export function ItemDetailDialog({
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <Paperclip className="w-5 h-5 text-muted-foreground" />
-                  <h3 className="text-lg font-medium">Attachments</h3>
+                  <h3 className="text-lg font-medium text-foreground">Attachments</h3>
                 </div>
                 <div className="space-y-2">
                   {item.attachments && item.attachments.length > 0 && (
@@ -312,7 +312,7 @@ export function ItemDetailDialog({
                         >
                           <Paperclip className="w-4 h-4 text-muted-foreground shrink-0" />
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium truncate">
+                            <div className="text-sm font-medium text-foreground truncate">
                               {attachment.fileName}
                             </div>
                             <div className="text-xs text-muted-foreground">
@@ -348,7 +348,7 @@ export function ItemDetailDialog({
               <section>
                 <div className="flex items-center gap-2 mb-3">
                   <ListChecks className="w-5 h-5 text-muted-foreground" />
-                  <h3 className="text-lg font-medium">Sub-tasks</h3>
+                  <h3 className="text-lg font-medium text-foreground">Sub-tasks</h3>
                 </div>
                 <div className="space-y-2">
                   {item.subTasks && item.subTasks.length > 0 && (
@@ -386,7 +386,7 @@ export function ItemDetailDialog({
                           </button>
                           <span
                             className={`flex-1 text-sm ${
-                              subTask.checked ? 'line-through text-muted-foreground' : ''
+                              subTask.checked ? 'line-through text-muted-foreground' : 'text-foreground'
                             }`}
                           >
                             {subTask.text}
