@@ -96,9 +96,10 @@ export function TodoItemMenu({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="py-1">
-          {menuItems.map((menuItem, index) => (
+          {menuItems.map((menuItem) => (
             <button
-              key={index}
+              key={menuItem.label}
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 menuItem.action();
@@ -115,6 +116,7 @@ export function TodoItemMenu({
 
           {/* Delete item */}
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               if (confirm('Delete this item?')) {

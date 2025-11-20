@@ -46,7 +46,7 @@ export default function Home() {
             {/* Login button */}
             <div className="pt-4">
               <button
-                onClick={() => signIn('keycloak')}
+                onClick={() => signIn('keycloak', { callbackUrl: '/' })}
                 className="group relative w-full max-w-xs mx-auto block px-8 py-4 text-lg font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">

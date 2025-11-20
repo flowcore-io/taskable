@@ -10,6 +10,7 @@ A Google Keep-inspired todo application powered by Usable fragments.
 - **Tailwind CSS 4** - Styling
 - **TypeScript** - Type safety
 - **Biome** - Linting and formatting
+- **PWA Support** - Installable on mobile and desktop devices
 
 ## Getting Started
 
@@ -69,12 +70,57 @@ lib/
 └── env.ts                # Environment validation
 ```
 
+## Features
+
+- 📱 **Progressive Web App (PWA)** - Install on your phone or desktop!
+- ✨ **Offline Support** - Works without internet connection
+- 🎨 **Google Keep-inspired** - Familiar masonry grid layout
+- 🔐 **Secure Authentication** - Keycloak integration
+- 💾 **Persistent Storage** - Todos backed by Usable fragments
+- 🌓 **Dark Mode** - Automatic theme switching
+
 ## Development
 
 - **Lint**: `yarn lint`
 - **Format**: `yarn format`
 - **Build**: `yarn build`
 - **Start**: `yarn start`
+- **Generate Icons**: `yarn generate:icons`
+
+## PWA Installation
+
+Taskable can be installed as a Progressive Web App on phones, tablets, and desktops:
+
+### Automatic Install Prompt
+When you first visit Taskable, you'll see a friendly popup asking if you want to install the app. Just click "Install" and you're done! 🎉
+
+### Manual Installation
+
+#### Mobile
+1. Open Taskable in your mobile browser
+2. Look for "Add to Home Screen" option
+3. Tap to install - it will appear like a native app!
+
+#### Desktop
+1. Open Taskable in Chrome/Edge
+2. Look for the install icon (⊕) in the address bar
+3. Click "Install" to add to your apps
+
+**Note**: PWA features require HTTPS in production (automatically handled by Vercel/Netlify).
+
+For detailed PWA setup and configuration, see [PWA_SETUP.md](./PWA_SETUP.md).
+
+## Testing Keycloak + Usable API
+
+A standalone test client is available in `/keycloak-test-client` to verify Keycloak authentication with the Usable API. This helps isolate and test the authentication flow independently.
+
+```bash
+cd keycloak-test-client
+npm install
+npm run dev
+```
+
+See `keycloak-test-client/README.md` and `keycloak-test-client/TESTING_GUIDE.md` for details.
 
 ## Deployment
 
