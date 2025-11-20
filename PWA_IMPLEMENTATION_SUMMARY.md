@@ -97,7 +97,7 @@ Quick reference for what was implemented
 - **Background**: #f4f3f3 (Cream) - App background
 
 ### Icons
-- Generated from `public/usable-logo.webp`
+- Generated from `public/taskable.png`
 - Regular icons: Logo on cream background
 - Maskable icons: Logo centered on blue background with padding
 

@@ -80,7 +80,7 @@ node scripts/generate-icons.js
 
 This will:
 
-1. Read `public/usable-logo.webp` as the source
+1. Read `public/taskable.png` as the source
 2. Generate icons in 8 sizes: 72, 96, 128, 144, 152, 192, 384, 512
 3. Create 2 maskable icons (192, 512) with proper safe zones for Android
 4. Save all icons to `public/icons/`

@@ -21,7 +21,7 @@ try {
   process.exit(1);
 }
 
-const SOURCE_IMAGE = path.join(__dirname, '../public/usable-logo.webp');
+const SOURCE_IMAGE = path.join(__dirname, '../public/taskable.png');
 const OUTPUT_DIR = path.join(__dirname, '../public/icons');
 
 // Icon sizes to generate
