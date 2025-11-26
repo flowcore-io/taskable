@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
@@ -39,6 +39,10 @@ export function Dashboard() {
   const [showTemplateConsent, setShowTemplateConsent] = useState(false);
   const [isCreatingTemplates, setIsCreatingTemplates] = useState(false);
   const [templateRefreshCounter, setTemplateRefreshCounter] = useState(0);
+  const isCardAnimatingRef = useRef(false);
+
+  // Check if we have a valid session with an access token
+  const hasValidSession = session?.accessToken != null;
 
   // Load config on mount
   useEffect(() => {
@@ -48,7 +52,7 @@ export function Dashboard() {
 
   // Check template status when config is loaded
   useEffect(() => {
-    if (!config?.workspaceId) return;
+    if (!config?.workspaceId || !hasValidSession) return;
 
     const checkTemplates = async () => {
       if (!shouldCheckTemplates(config)) return;
@@ -65,11 +69,13 @@ export function Dashboard() {
     };
 
     checkTemplates();
-  }, [config]);
+  }, [config, hasValidSession]);
 
   const { data: cards = [], isLoading } = useCards(
     config?.workspaceId || '',
     config?.fragmentTypeId || '',
+    undefined,
+    hasValidSession, // Pass session validity
   );
 
   const createMutation = useCreateCard(config?.workspaceId || '', config?.fragmentTypeId || '');
@@ -79,12 +85,18 @@ export function Dashboard() {
   const deleteMutation = useDeleteCard(config?.workspaceId || '', config?.fragmentTypeId || '');
 
   const handleCardClick = (card: TodoCard, position: DOMRect) => {
+    // Prevent opening if a card is currently open or animating
+    if (isCardAnimatingRef.current || showCardEditor) return;
+
     setSelectedCard(card);
     setCardPosition(position);
     setShowCardEditor(true);
   };
 
   const handleAddNewCard = () => {
+    // Prevent opening if a card is currently open or animating
+    if (isCardAnimatingRef.current || showCardEditor) return;
+
     setSelectedCard(null);
     setCardPosition(null);
     setShowCardEditor(true);
@@ -108,13 +120,15 @@ export function Dashboard() {
           collection: data.collection,
         });
       } else {
-        // Create new card (without closing)
-        await createMutation.mutateAsync({
+        // Create new card and update selectedCard with the created card's ID
+        const newCard = await createMutation.mutateAsync({
           title: data.title,
           summary: data.summary,
           items: data.items,
           collection: data.collection,
         });
+        // Update selectedCard so subsequent auto-saves will be updates, not creates
+        setSelectedCard(newCard);
       }
     } catch (error) {
       console.error('Failed to update card:', error);
@@ -147,9 +161,15 @@ export function Dashboard() {
           collection: data.collection,
         });
       }
+      isCardAnimatingRef.current = true;
       setShowCardEditor(false);
       setSelectedCard(null);
       setCardPosition(null);
+
+      // Fallback timeout in case onExitComplete doesn't fire
+      setTimeout(() => {
+        isCardAnimatingRef.current = false;
+      }, 250);
     } catch (error) {
       console.error('Failed to save card:', error);
       alert('Failed to save card. Please try again.');
@@ -158,15 +178,31 @@ export function Dashboard() {
 
   const handleDeleteCard = (id: string) => {
     deleteMutation.mutate(id);
+    isCardAnimatingRef.current = true;
     setShowCardEditor(false);
     setSelectedCard(null);
     setCardPosition(null);
+
+    // Fallback timeout in case onExitComplete doesn't fire
+    setTimeout(() => {
+      isCardAnimatingRef.current = false;
+    }, 250);
   };
 
   const handleCloseEditor = () => {
+    isCardAnimatingRef.current = true;
     setShowCardEditor(false);
     setSelectedCard(null);
     setCardPosition(null);
+
+    // Fallback timeout in case onExitComplete doesn't fire
+    setTimeout(() => {
+      isCardAnimatingRef.current = false;
+    }, 250);
+  };
+
+  const handleAnimationComplete = () => {
+    isCardAnimatingRef.current = false;
   };
 
   const handleOnboardingComplete = () => {
@@ -433,6 +469,7 @@ export function Dashboard() {
         onSave={handleSaveCard}
         onUpdate={handleUpdateCard}
         onDelete={handleDeleteCard}
+        onAnimationComplete={handleAnimationComplete}
         workspaceId={config?.workspaceId || ''}
         cardPosition={
           cardPosition

@@ -17,7 +17,8 @@ export default function Home() {
     );
   }
 
-  if (!session) {
+  // Show sign-in if no session or session has no access token (expired/invalid)
+  if (!session || !session.accessToken) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4">
         <div className="w-full max-w-md">
@@ -34,18 +35,15 @@ export default function Home() {
                 </div>
               </div>
               <div className="space-y-2">
-                <h1 className="text-6xl font-bold text-foreground tracking-tight">
-                  Taskable
-                </h1>
-                <p className="text-xl text-muted-foreground font-light">
-                  Usable as a Todo list
-                </p>
+                <h1 className="text-6xl font-bold text-foreground tracking-tight">Taskable</h1>
+                <p className="text-xl text-muted-foreground font-light">Usable as a Todo list</p>
               </div>
             </div>
 
             {/* Login button */}
             <div className="pt-4">
               <button
+                type="button"
                 onClick={() => signIn('keycloak', { callbackUrl: '/' })}
                 className="group relative w-full max-w-xs mx-auto block px-8 py-4 text-lg font-semibold bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
               >
@@ -55,6 +53,7 @@ export default function Home() {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -63,9 +62,9 @@ export default function Home() {
                       d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                     />
                   </svg>
-                  Login with Usable
+                  {session ? 'Session Expired - Sign In Again' : 'Login with Usable'}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               </button>
             </div>
 

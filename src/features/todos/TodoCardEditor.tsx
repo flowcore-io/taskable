@@ -33,6 +33,7 @@ interface TodoCardEditorProps {
     collection: string;
   }) => void;
   onDelete?: (id: string) => void;
+  onAnimationComplete?: () => void;
   cardPosition?: { top: number; left: number; width: number; height: number };
   workspaceId: string; // Added for file uploads
 }
@@ -44,6 +45,7 @@ export function TodoCardEditor({
   onSave,
   onUpdate,
   onDelete,
+  onAnimationComplete,
   cardPosition,
   workspaceId,
 }: TodoCardEditorProps) {
@@ -75,6 +77,26 @@ export function TodoCardEditor({
       setCollection('default');
     }
   }, [card]);
+
+  // Handle browser back button / swipe back gesture
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Push a new history state when card opens
+    window.history.pushState({ cardOpen: true }, '');
+
+    // Listen for back navigation (back button or swipe gesture)
+    const handlePopState = () => {
+      // When user goes back, close the card
+      onClose();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isOpen, onClose]);
 
   const autoSave = (updatedItems: TodoItem[]) => {
     if (!title.trim() || !onUpdate) return;
@@ -143,7 +165,13 @@ export function TodoCardEditor({
         collection,
       });
     }
-    onClose();
+
+    // If card is open and we're closing it via button, go back in history
+    if (isOpen && window.history.state?.cardOpen) {
+      window.history.back();
+    } else {
+      onClose();
+    }
   };
 
   const handleDelete = () => {
@@ -227,14 +255,13 @@ export function TodoCardEditor({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait" onExitComplete={onAnimationComplete}>
       {isOpen && (
         <>
           {/* Backdrop */}
           <motion.div
+            key="backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -245,53 +272,24 @@ export function TodoCardEditor({
 
           {/* Full-screen card */}
           <motion.div
-            layoutId={card?.id || 'new-card'}
-            initial={
-              cardPosition
-                ? {
-                    position: 'fixed',
-                    top: cardPosition.top,
-                    left: cardPosition.left,
-                    width: cardPosition.width,
-                    height: cardPosition.height,
-                  }
-                : {
-                    opacity: 0,
-                    scale: 0.9,
-                  }
-            }
+            key="card-editor"
+            initial={{
+              opacity: 0,
+              scale: 0.95,
+            }}
             animate={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              width: '100%',
-              height: '100%',
               opacity: 1,
               scale: 1,
             }}
-            exit={
-              cardPosition
-                ? {
-                    position: 'fixed',
-                    top: cardPosition.top,
-                    left: cardPosition.left,
-                    width: cardPosition.width,
-                    height: cardPosition.height,
-                    opacity: 0,
-                  }
-                : {
-                    opacity: 0,
-                    scale: 0.9,
-                  }
-            }
-            transition={{
-              type: 'spring',
-              stiffness: 300,
-              damping: 30,
+            exit={{
+              opacity: 0,
+              scale: 0.95,
             }}
-            className="z-50 flex items-center justify-center"
+            transition={{
+              duration: 0.2,
+              ease: 'easeInOut',
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center"
             style={{ backgroundColor: 'hsl(var(--background))' }}
             onKeyDown={handleKeyDown}
           >
@@ -373,13 +371,29 @@ export function TodoCardEditor({
                   ))}
 
                   {/* Add new item */}
-                  <div className="flex items-center gap-3 pt-2">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleAddItem();
+                    }}
+                    className="flex items-center gap-3 pt-2"
+                  >
                     <Plus className="w-5 h-5 text-muted-foreground shrink-0" aria-hidden="true" />
                     <input
                       ref={newItemInputRef}
                       type="text"
                       value={newItemText}
                       onChange={(e) => setNewItemText(e.target.value)}
+                      onFocus={(e) => {
+                        // Scroll the input into view when keyboard appears
+                        // Use setTimeout to wait for keyboard animation
+                        setTimeout(() => {
+                          e.target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                          });
+                        }, 100);
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
@@ -387,10 +401,11 @@ export function TodoCardEditor({
                         }
                       }}
                       placeholder="Add item"
+                      enterKeyHint="done"
                       className="flex-1 bg-transparent border-none outline-none text-lg text-foreground placeholder:text-muted-foreground"
                       aria-label="Add new item"
                     />
-                  </div>
+                  </form>
                 </div>
               </motion.div>
 

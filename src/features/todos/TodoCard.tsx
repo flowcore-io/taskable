@@ -24,7 +24,6 @@ export function TodoCardComponent({ card, onClick }: TodoCardProps) {
   return (
     <motion.div
       ref={cardRef}
-      layoutId={card.id}
       onClick={handleClick}
       className="bg-card border border-border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer"
       whileHover={{ y: -4 }}

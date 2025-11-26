@@ -24,6 +24,13 @@ async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
     });
 
     if (!response.ok) {
+      // Handle 401 Unauthorized - session/token expired
+      // This should rarely happen now that we check session validity before making calls
+      if (response.status === 401) {
+        console.error('Unexpected 401 - session is invalid. Please refresh the page.');
+        throw new Error('Session expired. Please refresh the page to sign in again.');
+      }
+
       let errorMessage = `HTTP ${response.status}`;
       try {
         const errorData = await response.json();
@@ -32,7 +39,7 @@ async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
         // If response body is not JSON, try to get text
         try {
           const errorText = await response.text();
-          if (errorText) errorMessage += `: ${errorText}`;
+          if (errorText) errorMessage = `${errorMessage}: ${errorText}`;
         } catch {
           // Ignore if we can't read the error body
         }

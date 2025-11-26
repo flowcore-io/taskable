@@ -15,6 +15,7 @@ export function useCards(
   workspaceId: string,
   fragmentTypeId: string,
   filters?: { collection?: string },
+  hasValidSession = true, // Default to true for backward compatibility
 ) {
   return useQuery({
     queryKey: cardKeys.filtered(workspaceId, fragmentTypeId, {
@@ -28,7 +29,7 @@ export function useCards(
         limit: 100,
       });
     },
-    enabled: !!workspaceId && !!fragmentTypeId,
+    enabled: !!workspaceId && !!fragmentTypeId && hasValidSession,
   });
 }
 

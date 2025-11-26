@@ -21,7 +21,10 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider>
-      <SessionProvider>
+      <SessionProvider
+        refetchInterval={5 * 60} // Refetch session every 5 minutes
+        refetchOnWindowFocus={true} // Refetch when window regains focus
+      >
         <QueryClientProvider client={queryClient}>
           {children}
           <PWAInstallPrompt />

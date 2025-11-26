@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
       // Allows relative callback URLs
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
+      if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
     async jwt({ token, account, trigger }) {
@@ -71,25 +71,46 @@ export const authOptions: NextAuthOptions = {
               refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
               expiresAt: Math.floor(Date.now() / 1000) + (refreshedTokens.expires_in || 3600),
             };
-          } else {
-            console.error('Failed to refresh token:', response.status, await response.text());
-            // Return token anyway - will fail on API call but user can re-authenticate
-            return token;
           }
+
+          console.error('Failed to refresh token:', response.status, await response.text());
+          // Refresh token is invalid/expired - clear the token and force re-auth
+          // Return token with error flag so we can detect this in session callback
+          return {
+            ...token,
+            error: 'RefreshTokenExpired',
+          };
         } catch (error) {
           console.error('Error refreshing token:', error);
-          return token;
+          return {
+            ...token,
+            error: 'RefreshTokenError',
+          };
         }
       }
 
-      return token;
+      // No refresh token available
+      return {
+        ...token,
+        error: 'NoRefreshToken',
+      };
     },
     async session({ session, token }) {
       console.log('Session callback:', {
         hasTokenAccessToken: !!token.accessToken,
         expiresAt: token.expiresAt,
         isExpired: token.expiresAt ? Date.now() >= (token.expiresAt as number) * 1000 : 'unknown',
+        error: token.error,
       });
+
+      // If there's a token error, we need to force re-authentication
+      if (token.error) {
+        console.error('Token error detected:', token.error);
+        // Don't include access token in session - this will cause API calls to fail
+        // and trigger re-authentication
+        return session;
+      }
+
       session.accessToken = token.accessToken as string | undefined;
       return session;
     },
