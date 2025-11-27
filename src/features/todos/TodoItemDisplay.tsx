@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Link as LinkIcon, Paperclip } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Link as LinkIcon, Paperclip, Trash2 } from 'lucide-react';
 import type { TodoItem } from '@/src/types';
 import { getItemStats, truncateText } from '@/src/lib/utils';
 import { motion } from 'framer-motion';
@@ -23,7 +23,15 @@ export function TodoItemDisplay({
 }: TodoItemDisplayProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(item.text);
+  const editInputRef = useRef<HTMLInputElement>(null);
   const stats = getItemStats(item);
+
+  // Focus input when entering edit mode
+  useEffect(() => {
+    if (isEditing && editInputRef.current) {
+      editInputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handleUpdateText = () => {
     if (editText.trim() && editText !== item.text) {
@@ -50,8 +58,10 @@ export function TodoItemDisplay({
       // Show progress for items with sub-tasks
       return (
         <button
+          type="button"
           onClick={() => onOpenDetail(item.id)}
           className="flex items-center gap-2 px-2 py-1 rounded bg-muted text-xs font-medium text-muted-foreground hover:bg-muted/80 transition-colors shrink-0"
+          aria-label={`View sub-tasks: ${stats.subTasksCompleted} of ${stats.subTasksTotal} completed`}
         >
           <span>
             {stats.subTasksCompleted}/{stats.subTasksTotal}
@@ -63,6 +73,7 @@ export function TodoItemDisplay({
     // Regular checkbox
     return (
       <motion.button
+        type="button"
         onClick={() => onToggle(item.id)}
         className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors shrink-0 ${
           item.checked
@@ -71,6 +82,7 @@ export function TodoItemDisplay({
         }`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
+        aria-label={item.checked ? 'Mark as incomplete' : 'Mark as complete'}
       >
         {item.checked && (
           <motion.svg
@@ -80,6 +92,7 @@ export function TodoItemDisplay({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </motion.svg>
@@ -99,50 +112,73 @@ export function TodoItemDisplay({
         {renderCompletionIndicator()}
 
         {/* Item content - clickable to open detail view */}
-        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onOpenDetail(item.id)}>
+        <div className="flex-1 min-w-0">
           {isEditing ? (
             <input
+              ref={editInputRef}
               type="text"
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
               onBlur={handleUpdateText}
               onKeyDown={handleKeyDown}
               onClick={(e) => e.stopPropagation()}
-              autoFocus
               className={`w-full bg-transparent border-none outline-none text-base ${
                 item.checked ? 'line-through text-muted-foreground' : 'text-foreground'
               }`}
             />
           ) : (
-            <div className="flex items-center gap-2 flex-wrap">
-              <span
-                className={`text-base ${
-                  item.checked ? 'line-through text-muted-foreground' : 'text-foreground'
-                }`}
-              >
-                {item.text}
-              </span>
+            <button
+              type="button"
+              onClick={() => onOpenDetail(item.id)}
+              className="w-full text-left bg-transparent border-none outline-none cursor-pointer p-0"
+            >
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className={`text-base ${
+                    item.checked ? 'line-through text-muted-foreground' : 'text-foreground'
+                  }`}
+                >
+                  {item.text}
+                </span>
 
-              {/* Enhancement icons */}
-              <div className="flex items-center gap-1">
-                {stats.hasLinks && <LinkIcon className="w-3.5 h-3.5 text-muted-foreground" />}
-                {stats.hasAttachments && (
-                  <Paperclip className="w-3.5 h-3.5 text-muted-foreground" />
-                )}
+                {/* Enhancement icons */}
+                <div className="flex items-center gap-1">
+                  {stats.hasLinks && <LinkIcon className="w-3.5 h-3.5 text-muted-foreground" />}
+                  {stats.hasAttachments && (
+                    <Paperclip className="w-3.5 h-3.5 text-muted-foreground" />
+                  )}
+                </div>
               </div>
-            </div>
+            </button>
           )}
         </div>
+
+        {/* Delete button - always visible on mobile, shows on hover on desktop */}
+        <motion.button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (confirm('Delete this item?')) {
+              onDelete(item.id);
+            }
+          }}
+          className="opacity-100 md:opacity-0 md:group-hover:opacity-100 p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all shrink-0"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Delete item"
+        >
+          <Trash2 className="w-4 h-4" />
+        </motion.button>
       </div>
 
       {/* Description preview (if exists) */}
       {stats.hasDescription && item.description && (
-        <div
-          className="ml-8 text-sm text-muted-foreground line-clamp-2 cursor-pointer"
+        <button
+          type="button"
+          className="ml-8 text-sm text-muted-foreground line-clamp-2 cursor-pointer text-left w-full"
           onClick={() => onOpenDetail(item.id)}
         >
           {truncateText(item.description, 150)}
-        </div>
+        </button>
       )}
     </motion.div>
   );
